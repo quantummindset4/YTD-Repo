@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select {{ download_type }} Format</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #606060;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .blur-background {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            width: 80%;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #F4DF4E;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 0 10px #F4DF4E, 0 0 20px #F4DF4E, 0 0 30px #F4DF4E;
+        }
+
+        .progress-container {
+            width: 80%;
+            background-color: #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 30px;
+            width: 0%;
+            background-color: #F4DF4E;
+            border-radius: 20px;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px #F4DF4E, 0 0 20px #F4DF4E, 0 0 30px #F4DF4E;
+        }
+
+        .progress-percentage {
+            margin-top: 10px;
+            color: white;
+        }
+
+        h1, h2 {
+            color: #F4DF4E;
+        }
+
+        #progress-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="blur-background">
+            <h1>Select {{ download_type }} Format</h1>
+            <form method="POST" action="{{ url_for('download') }}" onsubmit="showProgress()">
+                <input type="hidden" name="url" value="{{ url }}">
+                <input type="hidden" name="download_type" value="{{ download_type }}">
+
+                <label for="format_id">Select Format:</label>
+                <select name="format_id" id="format_id" required>
+                    {% for format in formats %}
+                        <option value="{{ format['format_id'] }}">
+                            {{ format.get('height', 'Unknown Resolution') }}p - {{ format['ext'] }} - 
+                            {% if format.get('filesize') %}
+                                {{ (format['filesize'] // 1024 // 1024) }} MB
+                            {% else %}
+                                Unknown size
+                            {% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+                <br><br>
+
+                <button type="submit">Download</button>
+            </form>
+        </div>
+
+        <div class="blur-background" id="progress-section">
+            <h2>Download Progress:</h2>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function showProgress() {
+            document.getElementById("progress-section").style.display = "block";  // Show progress section only when form is submitted
+
+            const eventSource = new EventSource("/progress");
+            eventSource.onmessage = function(event) {
+                const percentage = event.data;  // Only handle percentage
+                document.getElementById("progress-bar").style.width = percentage;
+                document.getElementById("progress-percentage").innerText = percentage;
+            };
+        }
+    </script>
+</body>
+</html>

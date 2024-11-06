@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Complete</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #606060;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 36px;
+            color: #F4DF4E;
+        }
+
+        .blur-background {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #F4DF4E;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 0 10px #F4DF4E, 0 0 20px #F4DF4E, 0 0 30px #F4DF4E;
+        }
+
+        h1 {
+            color: #F4DF4E;
+        }
+    </style>
+</head>
+<body>
+    <!-- "YT Downloader" text on top left -->
+    <div class="header">
+        YT Downloader
+    </div>
+
+    <div class="container">
+        <div class="blur-background">
+            <h1>Download Complete</h1>
+            <p>Your file has been downloaded successfully.</p>
+            <button onclick="window.location.href='/'">Download Again</button>
+        </div>
+    </div>
+</body>
+</html>

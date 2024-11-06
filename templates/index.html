@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader</title>
+    <style>
+        /* Background color to avoid white edges */
+        body {
+            margin: 0;
+            background-color: #606060;
+        }
+
+        /* Background video styling */
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: blur(4px); /* Blur effect */
+        }
+
+        /* Style for "YT Downloader" on the top-left */
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 36px;
+            color: #F4DF4E; /* YT Downloader text color */
+        }
+
+        /* Center content */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 80%; /* Make the container broader */
+            margin: 0 auto; /* Center the broader container */
+            text-align: center;
+        }
+
+        /* Form styling */
+        form {
+            background-color: rgba(255, 255, 255, 0);
+            padding: 5px;
+            border-radius: 10px;
+            width: 100%; /* Make form take full width of the container */
+        }
+
+        /* Background and blur for the labels and radio buttons */
+        .blur-background {
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent blur background */
+            backdrop-filter: blur(10px); /* Blur effect */
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        /* Radio buttons in horizontal format */
+        .radio-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .radio-buttons li {
+            list-style-type: none;
+            margin-bottom: 0;
+        }
+
+        /* Glowing button with new color */
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #F4DF4E; /* Fetch Formats button color */
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 0 10px #F4DF4E, 0 0 20px #F4DF4E, 0 0 30px #F4DF4E;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video id="background-video" autoplay loop muted>
+        <source src="{{ url_for('static', filename='videos/qmbg.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- "YT Downloader" text on top left -->
+    <div class="header">
+        YT Downloader
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Form -->
+        <form method="POST" action="/">
+            <div class="blur-background">
+                <label for="url">YouTube URL:</label>
+                <input type="text" name="url" id="url" required style="width: 80%; padding: 10px; margin: 10px 0;">
+            </div>
+            <br><br>
+
+            <div class="blur-background">
+                <label>Select Type</label>
+                <ul class="radio-buttons">
+                    <li><input type="radio" name="download_type" value="video" required> Video Only</li>
+                    <li><input type="radio" name="download_type" value="audio" required> Audio Only</li>
+                    <li><input type="radio" name="download_type" value="video_audio" required> Video and Audio</li>
+                </ul>
+            </div>
+            <br>
+
+            <button type="submit">Fetch Formats</button>
+        </form>
+    </div>
+</body>
+</html>
